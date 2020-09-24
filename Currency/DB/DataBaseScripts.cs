@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.IO;
 using System.Text;
@@ -7,7 +7,6 @@ using System.Linq;
 using System.Diagnostics;
 using System.Data.SQLite;
 using System.Data.Common;
-
 
 namespace Currency
 {
@@ -18,15 +17,14 @@ namespace Currency
         private SQLiteCommand command;
         private string tableName;
 
-        
-
-
         public DataBase()
         {
             this.dbFileName = "data.sqlite";
             this.connection = new SQLiteConnection($"Data Source={dbFileName};Version=3;");
             this.command = new SQLiteCommand();
             this.tableName = "Currency";
+            connection.Open();
+            command.Connection = connection;
             CreateDataBase();
         }
 
@@ -35,8 +33,6 @@ namespace Currency
             string ret = null;
             try
             {
-                connection.Open();
-                command.Connection = connection;
                 //I thought that Select request would be enough
                 string sqlQuery = $"SELECT DISTINCT value FROM {tableName} WHERE (date = '{date}' AND charcode = '{charCode}')";
                 command = new SQLiteCommand(sqlQuery, connection);
@@ -45,7 +41,6 @@ namespace Currency
                 {
                     ret += data.GetString(0);
                 }
-                connection.Close();
                 return ret;
 
             }
@@ -57,22 +52,15 @@ namespace Currency
 
         public void CreateDataBase()
         {
-
             if (!File.Exists(dbFileName))
             {
                 SQLiteConnection.CreateFile(dbFileName);
             }
-
             try
             {
-                connection.Open();
-                command.Connection = connection;
-                
                 command.CommandText = $"CREATE TABLE IF NOT EXISTS {tableName} (date TEXT, value TEXT, charcode TEXT, CONSTRAINT Cur UNIQUE  (date,value,charcode))";
                 SQLiteFunction.RegisterFunction(typeof(string));
-
                 command.ExecuteNonQuery();
-                connection.Close();
             }
             catch (SQLiteException ex)
             {
@@ -85,12 +73,8 @@ namespace Currency
         {
             try
             {
-                connection.Open();
-                command.Connection = connection;
-
                 command.CommandText = $"INSERT OR IGNORE INTO {tableName} (date, charcode, value) VALUES ('{date}', '{charCode}','{value}')";
                 command.ExecuteNonQuery();
-                connection.Close();
             }
             catch (SQLiteException ex)
             {
@@ -102,12 +86,9 @@ namespace Currency
 
         public void DropTable()
         {
-            connection.Open();
             command.Connection = connection;
             command.CommandText = $"DROP TABLE {tableName}";
             command.ExecuteNonQuery();
-            connection.Close();
-
         }
     }
 }
