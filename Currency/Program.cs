@@ -1,14 +1,7 @@
 using System;
 using System.Net;
-using System.IO;
 using System.Text;
 using System.Xml;
-using System.Linq;
-using System.Diagnostics;
-using System.Data.SQLite;
-using System.Data.Common;
-
-
 
 namespace Currency
 {
