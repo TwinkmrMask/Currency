@@ -12,8 +12,11 @@ namespace Currency
             string valute = "GBP";
             string today = GetDate();
             DataBase dataBase = new DataBase();
-            Parse parse = new Parse(GetData(GetDate()));
-            Console.WriteLine(dataBase.Select(GetDate(), valute));
+            //dataBase.Insert("9.08", GetDate(), valute);
+            dataBase.Each(GetDate(), valute);
+            //Parse parse = new Parse(GetData(GetDate()));
+            //Console.WriteLine(dataBase.Select(GetDate(), valute));
+            /*
             while (today == GetDate())
             {
                 if (today != GetDate())
@@ -23,6 +26,7 @@ namespace Currency
                     Console.WriteLine(dataBase.Select(GetDate(), valute));
                 }
             }
+            */
         }
 
         static void Main(string[] args)
@@ -67,11 +71,12 @@ namespace Currency
         public Parse(string xml)
         {
             this.xml = xml;
-            Handler();
+            //Handler();
         }
 
         private void Handler()
         {
+            /*
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             XmlElement date = doc.DocumentElement;
@@ -84,6 +89,7 @@ namespace Currency
                     date.Attributes["Date"].Value
                     );
             }
+            */
         }
     }
 }
