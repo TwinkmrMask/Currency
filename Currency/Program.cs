@@ -13,7 +13,8 @@ namespace Currency
             string today = GetDate();
             DataBase dataBase = new DataBase();
             //dataBase.Insert("9.08", GetDate(), valute);
-            dataBase.Each(GetDate(), valute);
+            Console.WriteLine(dataBase.Each(GetDate(), valute));
+            //Console.ReadKey(true);
             //Parse parse = new Parse(GetData(GetDate()));
             //Console.WriteLine(dataBase.Select(GetDate(), valute));
             /*

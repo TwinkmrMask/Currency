@@ -109,13 +109,17 @@ namespace Currency
         public string Each(string date, string charCode)
         {
             var currencyRatePair = this.links.SearchOrDefault(ConvertToSequence(charCode), ConvertToSequence(date));
-            var query = new Link<TLinkAddress>(this.links.Constants.Null, currencyRatePair, this.links.Constants.Any);
             var currencyRateValue = "";
-            this.links.Each((link) => {
-                var currencyRateValueLink = link[this.links.Constants.IndexPart];
-                currencyRateValue = ConvertToString(currencyRateValueLink);
-                return this.links.Constants.Break;
-            }, query);
+            if (currencyRatePair != default)
+            {
+                var query = new Link<TLinkAddress>(this.links.Constants.Any, currencyRatePair, this.links.Constants.Any);
+                this.links.Each((link) =>
+                {
+                    var currencyRateValueLink = link[this.links.Constants.TargetPart];
+                    currencyRateValue = ConvertToString(currencyRateValueLink);
+                    return this.links.Constants.Break;
+                }, query);
+            }
             return currencyRateValue;
         }
 
