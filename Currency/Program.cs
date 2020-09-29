@@ -11,27 +11,27 @@ namespace Currency
         {
             string valute = "GBP";
             string today = GetDate();
-            DataBase dataBase = new DataBase();
-            //dataBase.Insert("9.08", GetDate(), valute);
-            Console.WriteLine(dataBase.Each(GetDate(), valute));
-            //Console.ReadKey(true);
-            //Parse parse = new Parse(GetData(GetDate()));
-            //Console.WriteLine(dataBase.Select(GetDate(), valute));
-            /*
-            while (today == GetDate())
+            using (DataBase dataBase = new DataBase())
             {
-                if (today != GetDate())
+                dataBase.Dispose();
+                Parse parse = new Parse(GetData(GetDate()));
+                Console.WriteLine(dataBase.Each(GetDate(), valute));
+
+                while (today == GetDate())
                 {
-                    today = GetDate();
-                    parse = new Parse(GetData(GetDate()));
-                    Console.WriteLine(dataBase.Select(GetDate(), valute));
+                    if (today != GetDate())
+                    {
+                        today = GetDate();
+                        parse = new Parse(GetData(GetDate()));
+                        Console.WriteLine(dataBase.Each(GetDate(), valute));
+                    }
                 }
             }
-            */
         }
 
         static void Main(string[] args)
         {
+
             Start();
         }
         private static string GetData(string date)
@@ -46,22 +46,8 @@ namespace Currency
 
         private static string GetDate()
         {
-            DateTime _date = DateTime.Today;
-            StringBuilder date = new StringBuilder();
-            if (_date.Day.ToString().Length == 1)
-            {
-                date.Append("0");
-            }
-            date.Append(_date.Day.ToString());
-            date.Append(".");
-            if (_date.Month.ToString().Length == 1)
-            {
-                date.Append("0");
-            }
-            date.Append(_date.Month.ToString());
-            date.Append(".");
-            date.Append(_date.Year.ToString());
-            return date.ToString();
+            string _date = DateTime.Today.ToString("dd.MM.yyyy");
+            return _date;
         }
     }
 
@@ -72,25 +58,26 @@ namespace Currency
         public Parse(string xml)
         {
             this.xml = xml;
-            //Handler();
+            Handler();
         }
 
         private void Handler()
         {
-            /*
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             XmlElement date = doc.DocumentElement;
-            DataBase dataBase = new DataBase();
-            foreach (XmlNode valute in date)
+            using (DataBase dataBase = new DataBase())
             {
-                dataBase.Insert(
-                    valute.SelectSingleNode("./Value").InnerText,
-                    valute.SelectSingleNode("./CharCode").InnerText,
-                    date.Attributes["Date"].Value
-                    );
+                foreach (XmlNode valute in date)
+                {
+                    dataBase.Create(
+                        valute.SelectSingleNode("./Value").InnerText,
+                        valute.SelectSingleNode("./CharCode").InnerText,
+                        date.Attributes["Date"].Value
+                        );
+                }
             }
-            */
+
         }
     }
 }
