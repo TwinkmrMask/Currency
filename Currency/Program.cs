@@ -13,8 +13,8 @@ namespace Currency
             string today = GetDate();
             using (DataBase dataBase = new DataBase())
             {
-                dataBase.Dispose();
-                Parse parse = new Parse(GetData(GetDate()));
+                Parse parse = new Parse(dataBase);
+                parse.Handler(GetData(GetDate()));
                 Console.WriteLine(dataBase.Each(GetDate(), valute));
 
                 while (today == GetDate())
@@ -22,7 +22,7 @@ namespace Currency
                     if (today != GetDate())
                     {
                         today = GetDate();
-                        parse = new Parse(GetData(GetDate()));
+                        parse.Handler(GetData(GetDate()));
                         Console.WriteLine(dataBase.Each(GetDate(), valute));
                     }
                 }
@@ -53,31 +53,27 @@ namespace Currency
 
     class Parse
     {
-        private string xml;
+        DataBase data;
 
-        public Parse(string xml)
+        public Parse(DataBase data)
         {
-            this.xml = xml;
-            Handler();
+            this.data = data;
+
         }
 
-        private void Handler()
+        public void Handler(string xml)
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             XmlElement date = doc.DocumentElement;
-            using (DataBase dataBase = new DataBase())
-            {
                 foreach (XmlNode valute in date)
                 {
-                    dataBase.Create(
+                    data.Create(
                         valute.SelectSingleNode("./Value").InnerText,
                         valute.SelectSingleNode("./CharCode").InnerText,
                         date.Attributes["Date"].Value
                         );
                 }
-            }
-
         }
     }
 }
