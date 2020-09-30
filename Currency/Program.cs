@@ -11,16 +11,20 @@ namespace Currency
         {
             string valute = "GBP";
             string today = GetDate();
-            DataBase dataBase = new DataBase();
-            Parse parse = new Parse(GetData(GetDate()));
-            Console.WriteLine(dataBase.Select(GetDate(), valute));
-            while (today == GetDate())
+            using (DataBase dataBase = new DataBase())
             {
-                if (today != GetDate())
+                Parse parse = new Parse(dataBase);
+                parse.Handler(GetData(GetDate()));
+                Console.WriteLine(dataBase.Select(GetDate(), valute));
+
+                while (today == GetDate())
                 {
-                    today = GetDate();
-                    parse = new Parse(GetData(GetDate()));
-                    Console.WriteLine(dataBase.Select(GetDate(), valute));
+                    if (today != GetDate())
+                    {
+                        today = GetDate();
+                        parse.Handler(GetData(GetDate()));
+                        Console.WriteLine(dataBase.Select(GetDate(), valute));
+                    }
                 }
             }
         }
@@ -41,49 +45,34 @@ namespace Currency
 
         private static string GetDate()
         {
-            DateTime _date = DateTime.Today;
-            StringBuilder date = new StringBuilder();
-            if (_date.Day.ToString().Length == 1)
-            {
-                date.Append("0");
-            }
-            date.Append(_date.Day.ToString());
-            date.Append(".");
-            if (_date.Month.ToString().Length == 1)
-            {
-                date.Append("0");
-            }
-            date.Append(_date.Month.ToString());
-            date.Append(".");
-            date.Append(_date.Year.ToString());
-            return date.ToString();
+            string _date = DateTime.Today.ToString("dd.MM.yyyy");
+            return _date;
         }
     }
 
     class Parse
     {
-        private string xml;
+        DataBase data;
 
-        public Parse(string xml)
+        public Parse(DataBase data)
         {
-            this.xml = xml;
-            Handler();
+            this.data = data;
+
         }
 
-        private void Handler()
+        public void Handler(string xml)
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             XmlElement date = doc.DocumentElement;
-            DataBase dataBase = new DataBase();
-            foreach (XmlNode valute in date)
-            {
-                dataBase.Insert(
-                    valute.SelectSingleNode("./Value").InnerText,
-                    valute.SelectSingleNode("./CharCode").InnerText,
-                    date.Attributes["Date"].Value
-                    );
-            }
+                foreach(XmlNode valute in date)
+                {
+                    data.Insert(
+                        valute.SelectSingleNode("./Value").InnerText,
+                        valute.SelectSingleNode("./CharCode").InnerText,
+                        date.Attributes["Date"].Value
+                        );
+                }
         }
     }
 }
