@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\reboo\\source\\repos\\Currency\\Currency\\Currency.csproj": {}
+    "C:\\Users\\reboo\\source\\Currency\\Currency\\Currency.csproj": {}
   },
   "projects": {
-    "C:\\Users\\reboo\\source\\repos\\Currency\\Currency\\Currency.csproj": {
+    "C:\\Users\\reboo\\source\\Currency\\Currency\\Currency.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\reboo\\source\\repos\\Currency\\Currency\\Currency.csproj",
+        "projectUniqueName": "C:\\Users\\reboo\\source\\Currency\\Currency\\Currency.csproj",
         "projectName": "Currency",
-        "projectPath": "C:\\Users\\reboo\\source\\repos\\Currency\\Currency\\Currency.csproj",
+        "projectPath": "C:\\Users\\reboo\\source\\Currency\\Currency\\Currency.csproj",
         "packagesPath": "C:\\Users\\reboo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\reboo\\source\\repos\\Currency\\Currency\\obj\\",
+        "outputPath": "C:\\Users\\reboo\\source\\Currency\\Currency\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

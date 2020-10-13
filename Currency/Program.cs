@@ -11,7 +11,7 @@ namespace Currency
         {
             string valute = "GBP";
             string today = GetDate();
-            using (DataBase dataBase = new DataBase())
+            DataBase dataBase = new DataBase();
             {
                 Parse parse = new Parse(dataBase);
                 parse.Handler(GetData(GetDate()));
